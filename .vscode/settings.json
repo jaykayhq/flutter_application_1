@@ -1,0 +1,33 @@
+{
+  "deno.enablePaths": [
+    "supabase/functions"
+  ],
+  "deno.lint": true,
+  "deno.unstable": [
+    "bare-node-builtins",
+    "byonm",
+    "sloppy-imports",
+    "unsafe-proto",
+    "webgpu",
+    "broadcast-channel",
+    "worker-options",
+    "cron",
+    "kv",
+    "ffi",
+    "fs",
+    "http",
+    "net"
+  ],
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "deno.enable": true,
+  "cmake.sourceDirectory": "C:/Users/HP/Documents/flutter project/flutter_application_1/windows/flutter",
+  "chat.mcp.serverSampling": {
+    "flutter_application_1/.vscode/mcp.json: supabase": {
+      "allowedModels": [
+        "github.copilot-chat/gpt-4.1"
+      ]
+    }
+  }
+}
