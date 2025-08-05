@@ -62,16 +62,24 @@ serve(async (_req) => {
       throw new Error("Task payload is invalid. Must contain either 'prompt' or 'trend_ids'.");
     }
 
-    // 3. --- Call Gemini API with the determined prompt ---
+    // 3. --- Call Gemini 1.5 Flash API with the determined prompt ---
     const geminiApiKey = Deno.env.get("GEMINI_API_KEY");
     if (!geminiApiKey) throw new Error("Missing GEMINI_API_KEY.");
-    const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`;
+    const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`;
 
-    console.log("Sending prompt to Gemini API...");
+    console.log("Sending prompt to Gemini 1.5 Flash API...");
     const geminiResponse = await fetch(geminiApiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+      body: JSON.stringify({ 
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.7,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 1024,
+        }
+      }),
     });
 
     if (!geminiResponse.ok) throw new Error(`Gemini API Error: ${await geminiResponse.text()}`);

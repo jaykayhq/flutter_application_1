@@ -12,6 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
   supabase_flutter: ^2.0.0 # Using a recent version, will verify latest
+  fl_chart: ^0.66.0
+  google_fonts: ^6.1.0
+  http: ^1.1.0
 
   cupertino_icons: ^1.0.2
 

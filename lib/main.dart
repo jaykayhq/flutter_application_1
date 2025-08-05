@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'app/modules/home/views/trends_view.dart' as trends;
 import 'app/modules/home/views/insights_view.dart' as insights;
+import 'app/modules/home/views/dashboard_view.dart' as dashboard;
+import 'app/modules/home/views/campaign_tracker_view.dart' as campaign;
+import 'app/modules/home/views/recommendations_view.dart' as recommendations;
+import 'app/modules/home/views/profile_view.dart' as profile;
+import 'app/modules/home/views/web_crawler_view.dart' as crawler;
+import 'app/modules/home/views/auth_gate.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Supabase.initialize(
     url: 'https://druyjbsgrfauseoxjeas.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRydXlqYnNncmZhdXNlb3hqZWFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwNTE5NjMsImV4cCI6MjA2NzYyNzk2M30.OW1AC8Url6oh86VeBY3nShtoHR7AXfqV3ZhJCtJL4RM',
+    anonKey: 'sb_publishable_SlmJi5enB74vzJpjuxRx6A_Yie-VriP',
   );
 
   runApp(const MyApp());
@@ -27,7 +33,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const MainScreen(),
+      home: const AuthGate(child: MainScreen()),
     );
   }
 }
@@ -43,8 +49,23 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    const trends.InsightsView(),
+    const dashboard.DashboardView(),
+    const trends.TrendsView(),
     const insights.InsightsView(),
+    const campaign.CampaignTrackerView(),
+    const recommendations.RecommendationsView(),
+    const crawler.WebCrawlerView(),
+    const profile.ProfileView(),
+  ];
+
+  static final List<String> _titles = [
+    'Dashboard',
+    'Trends',
+    'Insights',
+    'Campaigns',
+    'Recommendations',
+    'Crawler',
+    'Profile',
   ];
 
   void _onItemTapped(int index) {
@@ -57,21 +78,44 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_selectedIndex == 0 ? 'Social Trends' : 'Actionable Insights'),
+        title: Text(_titles[_selectedIndex]),
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.trending_up),
             label: 'Trends',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.lightbulb),
+            icon: Icon(Icons.insights),
             label: 'Insights',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.campaign),
+            label: 'Campaigns',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.recommend),
+            label: 'Recommendations',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.web),
+            label: 'Crawler',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
+        selectedItemColor: const Color(0xFF28a745),
+        unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
     );
